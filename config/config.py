@@ -4,14 +4,14 @@ REDIS_PORT = 6379 # it follows the same configuration as created redis by docker
 REDIS_DB = 0
 GATEWAY_ADDR = '10.164.0.3:7000' # need to update as your private_ip
 MASTER_HOST = '10.164.0.3:8000' # need to update as your private_ip
-WORKFLOW_YAML_ADDR = {'fileprocessing': '/home/openwhisk/Workflow/benchmark/fileprocessing/flat_workflow.yaml',
-                  'illgal_recognizer': '/home/openwhisk/Workflow/benchmark/illgal_recognizer/flat_workflow.yaml',
-                  'video': '/home/openwhisk/Workflow/benchmark/video/flat_workflow.yaml',
-                  'wordcount': '/home/openwhisk/Workflow/benchmark/wordcount/flat_workflow.yaml',
-                  'cycles': '/home/openwhisk/Workflow/benchmark/generator/cycles/flat_workflow.yaml',
-                  'epigenomics': '/home/openwhisk/Workflow/benchmark/generator/epigenomics/flat_workflow.yaml',
-                  'genome': '/home/openwhisk/Workflow/benchmark/generator/genome/flat_workflow.yaml',
-                  'soykb': '/home/openwhisk/Workflow/benchmark/generator/soykb/flat_workflow.yaml'}
+WORKFLOW_YAML_ADDR = {'fileprocessing': '/home/d_freina/FaaSFlow/benchmark/fileprocessing/flat_workflow.yaml',
+                  'illgal_recognizer': '/home/d_freina/FaaSFlow/benchmark/illgal_recognizer/flat_workflow.yaml',
+                  'video': '/home/d_freina/FaaSFlow/benchmark/video/flat_workflow.yaml',
+                  'wordcount': '/home/d_freina/FaaSFlow/benchmark/wordcount/flat_workflow.yaml',
+                  'cycles': '/home/d_freina/FaaSFlow/benchmark/generator/cycles/flat_workflow.yaml',
+                  'epigenomics': '/home/d_freina/FaaSFlow/benchmark/generator/epigenomics/flat_workflow.yaml',
+                  'genome': '/home/d_freina/FaaSFlow/benchmark/generator/genome/flat_workflow.yaml',
+                  'soykb': '/home/d_freina/FaaSFlow/benchmark/generator/soykb/flat_workflow.yaml'}
 NETWORK_BANDWIDTH = 25 * 1024 * 1024 / 4 # 25MB/s / 4
 NET_MEM_BANDWIDTH_RATIO = 15 # mem_time = net_time / 15
 CONTAINER_MEM = 256 * 1024 * 1024 # 256MB
