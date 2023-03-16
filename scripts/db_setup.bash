@@ -14,7 +14,7 @@ apt-get install -y docker-ce docker-ce-cli containerd.io
 apt-get install wondershaper
 # install and initialize couchdb
 docker pull couchdb
-docker run -itd -p 5984:5984 -v /home/d_freina/local.ini:/opt/couchdb/etc/local.ini -e COUCHDB_USER=openwhisk -e COUCHDB_PASSWORD=openwhisk --name couchdb couchdb
+docker run -itd -p 5984:5984 -v ~/FaaSFlow/couchdb.ini:/opt/couchdb/etc/local.ini -e COUCHDB_USER=openwhisk -e COUCHDB_PASSWORD=openwhisk --name couchdb couchdb
 pip3 install -r requirements.txt
 python3 couchdb_starter.py
 # install redis
