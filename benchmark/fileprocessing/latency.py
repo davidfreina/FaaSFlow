@@ -41,10 +41,10 @@ def trigger_function(request_id, function_name):
     info = repo.get_function_info(function_name, 'function_info')
     url = 'http://{}/request'.format(info['ip'])
     data = {
-        'request_id': request_id,
-        'workflow_name': 'test',
-        'function_name': function_name,
-        'no_parent_execution': True
+        "request_id": request_id,
+        "workflow_name": 'test',
+        "function_name": function_name,
+        "no_parent_execution": True
     }
     requests.post(url, json=data)
 

@@ -23,10 +23,10 @@ def checkBase(data):
     if name in names:
         raise Exception('Duplicate name: \'{}\'.'.format(name))
     names.add(name)
-        
+
     tp = valueAtIndex(data, 'type')
     if tp == None:
-        raise Exception('The key \'type\' is expected in \'{}\'.'.format(name))    
+        raise Exception('The key \'type\' is expected in \'{}\'.'.format(name))
     elif tp == 'pass':
         checkPass(data, name)
     elif tp == 'parallel':
@@ -38,7 +38,7 @@ def checkBase(data):
     elif tp == 'function':
         checkFunction(data, name)
     else:
-        raise Exception('The key \'type\' in \'{}\' is expected to be a pass, parallel, switch, foreach or function.'.format(name))    
+        raise Exception('The key \'type\' in \'{}\' is expected to be a pass, parallel, switch, foreach or function.'.format(name))
 
 def checkPass(data, name):
     steps = valueAtIndex(data, 'steps')
@@ -74,7 +74,7 @@ def checkSwitch(data, name):
     for choice in choices:
         if 'condition' in choice and 'go' in choice:
             if type(choice['condition']) is not str:
-                raise Exception('All conditions of \'{}\' are expected to be strs.'.format(name))        
+                raise Exception('All conditions of \'{}\' are expected to be strs.'.format(name))
             if type(choice['go']) is dict:
                 checkBase(choice['go'])
             else:
@@ -85,28 +85,28 @@ def checkSwitch(data, name):
 def checkForeach(data, name):
     task = valueAtIndex(data, 'task')
     if task == None:
-        raise Exception('The key \'task\' is expected in \'{}\'.'.format(name))    
+        raise Exception('The key \'task\' is expected in \'{}\'.'.format(name))
 
     type = valueAtIndex(task, 'type')
     if type == None:
-        raise Exception('The key \'type\' is expected in task of \'{}\'.'.format(name))    
+        raise Exception('The key \'type\' is expected in task of \'{}\'.'.format(name))
     elif type != 'function':
-        raise Exception('The key \'type\ in task of \'{}\' is expected to be a function.'.format(name))    
-    
+        raise Exception('The key \'type\ in task of \'{}\' is expected to be a function.'.format(name))
+
     checkBase(task)
 
 def checkFunction(data, name):
     source = valueAtIndex(data, 'source')
     if source == None:
-        raise Exception('The key \'resouce\' is expected in \'{}\'.'.format(name))    
-    
+        raise Exception('The key \'resouce\' is expected in \'{}\'.'.format(name))
+
     output = valueAtIndex(data, 'output')
-    if output != None: 
+    if output != None:
         if type(output) is not list:
-            raise Exception('The key \'output\' in \'{}\' is expected to be a list.'.format(name))        
+            raise Exception('The key \'output\' in \'{}\' is expected to be a list.'.format(name))
         for output in output:
             if type(output) is not str:
-                raise Exception('All values in \'output\' in \'{}\' is expected to be a str.'.format(name))            
+                raise Exception('All values in \'output\' in \'{}\' is expected to be a str.'.format(name))
 
 # --------------------------------- Checking ends. ---------------------------------
 
@@ -144,7 +144,7 @@ def parseParallel(data):
     for branch in branches:
         branches_obj.append(parseBase(branch))
     return Parallel(name, inputMappings, outputMappings, branches_obj)
-        
+
 def parseSwitch(data):
     name = valueAtIndex(data, 'name')
     inputMappings = valueAtIndex(data, 'inputMappings')
@@ -172,14 +172,14 @@ def parseFunction(data):
 # ---------------------------- Parse ends. ----------------------------------
 
 def fetch_global_input(path):
-    for path, dir_list, file_list in os.walk(os.path.join(path, 'input')):  
-        for file_name in file_list:  
+    for path, dir_list, file_list in os.walk(os.path.join(path, 'input')):
+        for file_name in file_list:
             global_input[file_name] = {'type': 'pass', 'value': {'function': 'INPUT', 'parameter': file_name}}
 
 def parse(path):
     filename = os.path.join(path, 'workflow.yaml')
     with open(filename, "r") as f:
-        data = yaml.load(f) 
+        data = yaml.load(f)
     checkBase(data)
     return parseBase(data)
 
@@ -193,7 +193,7 @@ def flatten_and_simplify(main):
         for i in range(len(all_functions)):
             current = all_functions[i]
             if current != None and current.is_virtual:
-                if current.next['type'] == 'pass' and len(current.next['nodes']) == 1: 
+                if current.next['type'] == 'pass' and len(current.next['nodes']) == 1:
                     next = current.next['nodes'][0]
                     if len(next.prev) == 1:
                     # case 1 for simplification
@@ -208,7 +208,7 @@ def flatten_and_simplify(main):
                             for j in range(len(prev.next['nodes'])):
                                 if prev.next['nodes'][j] == current:
                                     prev.next['nodes'][j] = next
-                elif len(current.next['nodes']) == 0: 
+                elif len(current.next['nodes']) == 0:
                 # case 2 for simplification
                 # The current virtual node has no next node.
                     print('#remove:', current.name)
@@ -230,7 +230,7 @@ def flatten_and_simplify(main):
                         for next in current.next['nodes']:
                             assert len(next.prev) == 1
                             next.prev[0] = prev
-                     
+
 
 path = '../../examples/parallel'
 # Step 1. Fetch all inputs from path.
@@ -247,8 +247,8 @@ print('final:', global_output)
 #         Simplify the flat struture by removing some redundant virtual nodes.
 flatten_and_simplify(main)
 
-# Step 5. Print the flat struture. 
+# Step 5. Print the flat struture.
 yaml_data = main.get_yaml()
-yaml_data = {'global_input': global_input, 'fuctions': yaml_data, 'global_output': global_output}
+yaml_data = {"global_input": global_input, "fuctions": yaml_data, "global_output": global_output}
 with open(os.path.join(path, 'flat_workflow.yaml'), 'w', encoding = 'utf-8') as f:
     yaml.dump(yaml_data, f, sort_keys=False)

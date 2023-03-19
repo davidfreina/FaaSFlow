@@ -23,10 +23,10 @@ def trigger_function(workflow_name, request_id, function_name):
         ip = config.MASTER_HOST
     url = 'http://{}/request'.format(ip)
     data = {
-        'request_id': request_id,
-        'workflow_name': workflow_name,
-        'function_name': function_name,
-        'no_parent_execution': True
+        "request_id": request_id,
+        "workflow_name": workflow_name,
+        "function_name": function_name,
+        "no_parent_execution": True
     }
     requests.post(url, json=data)
 
@@ -51,7 +51,7 @@ def run_workflow(workflow_name, request_id):
             master_addr = config.MASTER_HOST
         clear_url = 'http://{}/clear'.format(master_addr)
         requests.post(clear_url, json={'request_id': request_id, 'master': True, 'workflow_name': workflow_name})
-    
+
     return end - start
 
 @app.route('/run', methods = ['POST'])

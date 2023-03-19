@@ -70,7 +70,7 @@ class MasterSPManager:
         self.foreach_func = repo.get_foreach_functions(self.meta_db)
         self.merge_func = repo.get_merge_functions(self.meta_db)
         self.func = repo.get_current_node_functions(self.host_addr, self.info_db)
-        
+
         self.function_manager = FunctionManager(function_info_addr, min_port)
         min_port += 5000
 
@@ -82,7 +82,7 @@ class MasterSPManager:
         state = self.states[request_id]
         self.lock.release()
         return state
-    
+
     def del_state_remote(self, request_id: str, remote_addr: str):
         url = 'http://{}/clear'.format(remote_addr)
         requests.post(url, json={'request_id': request_id, 'workflow_name': self.workflow_name})
@@ -153,7 +153,7 @@ class MasterSPManager:
         if runnable:
             state.executed[function_name] = True
             state.lock.release()
-            self.node_select() # simulate node selecting 
+            self.node_select() # simulate node selecting
             info = self.get_function_info(function_name)
             if function_name.startswith('virtual'): # virtual must run on master
                 self.run_switch(state, info)
@@ -161,10 +161,10 @@ class MasterSPManager:
             else:
                 remote_url = 'http://{}/request'.format(remote_addr)
                 data = {
-                    'request_id': state.request_id,
-                    'workflow_name': self.workflow_name,
-                    'function_name': function_name,
-                    'no_parent_execution': no_parent_execution,
+                    "request_id": state.request_id,
+                    "workflow_name": self.workflow_name,
+                    "function_name": function_name,
+                    "no_parent_execution": no_parent_execution,
                 }
                 requests.post(remote_url, json=data)
                 jobs = [
@@ -192,7 +192,7 @@ class MasterSPManager:
         if function_name.startswith('virtual'):
             self.run_switch(state, info)
             return # do not need to check next
-        
+
         if function_name in self.foreach_func:
             self.run_foreach(state, info)
         elif function_name in self.merge_func:
@@ -248,6 +248,6 @@ class MasterSPManager:
 
     def clear_mem(self, request_id):
         repo.clear_mem(request_id)
-    
+
     def clear_db(self, request_id):
         repo.clear_db(request_id)

@@ -14,7 +14,7 @@ import time
 import find_critical_path
 
 repo = Repository()
-CRIT_FUNCS = {'wordcount': ['start', 'count', 'merge'], 
+CRIT_FUNCS = {'wordcount': ['start', 'count', 'merge'],
               'illgal_recognizer': ["mosaic","translate","violence","virtual2","extract","word_censor","virtual1","upload"],
               'fileprocessing': ["conversion","upload","start"],
               'video': ["virtual1","split","merge","transcode","upload"]}
@@ -22,7 +22,7 @@ TEST_PER_WORKFLOW = 3 * 60
 
 def run_workflow(workflow_name, request_id):
     url = 'http://' + config.GATEWAY_ADDR + '/run'
-    data = {'workflow':workflow_name, 'request_id': request_id}
+    data = {"workflow":workflow_name, "request_id": request_id}
     rep = requests.post(url, json=data)
     return rep.json()['latency']
 

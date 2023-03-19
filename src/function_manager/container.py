@@ -50,7 +50,7 @@ class Container:
 
     # initialize the container
     def init(self, workflow_name, function_name):
-        data = { 'workflow': workflow_name, 'function': function_name }
+        data = { "workflow": workflow_name, "function": function_name }
         r = requests.post(base_url.format(self.port, 'init'), json=data)
         self.lasttime = time.time()
         return r.status_code == 200

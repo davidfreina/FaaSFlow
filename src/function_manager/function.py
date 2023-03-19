@@ -28,10 +28,10 @@ class Function:
         self.num_exec = 0 # the number of containers in execution, not in container pool
         self.container_pool = []
         self.b = BoundedSemaphore()
-    
+
     # put the request into request queue
     def send_request(self, request_id, runtime, input, output, to, keys):
-        data = {'request_id': request_id, 'runtime': runtime, 'input': input, 'output': output, 'to': to, 'keys': keys}
+        data = {"request_id": request_id, "runtime": runtime, "input": input, "output": output, "to": to, "keys": keys}
         req = RequestInfo(request_id, data)
         self.rq.append(req)
         res = req.result.get()
@@ -43,15 +43,15 @@ class Function:
         if len(self.rq) - self.num_processing == 0:
             return
         self.num_processing += 1
-        
+
         # 1. try to get a workable container from pool
         container = self.self_container()
-        
+
         # create a new container
         while container is None:
         # if container is None:
             container = self.create_container()
-           
+
         # the number of exec container hits limit
         if container is None:
             self.num_processing -= 1
@@ -63,7 +63,7 @@ class Function:
         logging.info('send request to: %s of: %s, rq len: %d', self.info.function_name, req.request_id, len(self.rq))
         res = container.send_request(req.data)
         req.result.set(res)
-        
+
         # 3. put the container back into pool
         self.put_container(container)
 
@@ -78,7 +78,7 @@ class Function:
             res = self.container_pool.pop(-1)
             self.num_exec += 1
         self.b.release()
-        
+
         return res
 
     # create a new container

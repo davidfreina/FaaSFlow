@@ -20,7 +20,7 @@ e2e_dict = {}
 
 def run_workflow(workflow_name, request_id):
     url = 'http://' + config.GATEWAY_ADDR + '/run'
-    data = {'workflow':workflow_name, 'request_id': request_id}
+    data = {"workflow":workflow_name, "request_id": request_id}
     try:
         rep = requests.post(url, json=data, timeout=TIMEOUT)
         return rep.json()['latency']

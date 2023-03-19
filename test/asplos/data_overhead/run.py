@@ -16,7 +16,7 @@ TEST_PER_WORKFLOW = 2 * 60
 
 def run_workflow(workflow_name, request_id):
     url = 'http://' + config.GATEWAY_ADDR + '/run'
-    data = {'workflow':workflow_name, 'request_id': request_id}
+    data = {"workflow":workflow_name, "request_id": request_id}
     rep = requests.post(url, json=data)
     return rep.json()['latency']
 

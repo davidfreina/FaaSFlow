@@ -29,7 +29,7 @@ def run_workflow(workflow_name, request_id):
     if ticket > 0 and timeout < 3:
         gevent.spawn_later(60 / RPM, run_workflow, workflow_name, str(uuid.uuid4()))
     url = 'http://' + config.GATEWAY_ADDR + '/run'
-    data = {'workflow':workflow_name, 'request_id': request_id}
+    data = {"workflow":workflow_name, "request_id": request_id}
     try:
         rep = requests.post(url, json=data, timeout=60)
         e2e_latency = rep.json()['latency']
@@ -110,4 +110,3 @@ if __name__ == '__main__':
         elif name == '--workflow':
             workflow = value
     analyze(datamode, workflow)
-        
