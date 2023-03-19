@@ -85,7 +85,7 @@ class MasterSPManager:
 
     def del_state_remote(self, request_id: str, remote_addr: str):
         url = 'http://{}/clear'.format(remote_addr)
-        requests.post(url, json={'request_id': request_id, 'workflow_name': self.workflow_name})
+        requests.post(url, json={"request_id": request_id, "workflow_name": self.workflow_name})
 
     # delete state
     def del_state(self, request_id: str, master: bool):

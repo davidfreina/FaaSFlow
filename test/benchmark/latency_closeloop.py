@@ -32,7 +32,7 @@ def run_workflow(workflow_name, request_id):
     end = time.time()
     master_addr = repo.get_all_addrs(workflow_name + '_workflow_metadata')[0]
     clear_url = 'http://{}/clear'.format(master_addr)
-    requests.post(clear_url, json={'request_id': request_id, 'master': True, 'workflow_name': workflow_name})
+    requests.post(clear_url, json={"request_id": request_id, "master": True, "workflow_name": workflow_name})
     return end - start
 
 def analyze_workflow(workflow_name):

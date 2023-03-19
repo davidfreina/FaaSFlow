@@ -30,7 +30,7 @@ def trigger_function(request_id, function_name):
         print('Exception Happend, Clearing...')
         master_addr = repo.get_all_addrs(workflow_name + '_workflow_metadata')[0]
         clear_url = 'http://{}/clear'.format(master_addr)
-        requests.post(clear_url, json={'request_id': request_id, 'master': True, 'workflow_name': workflow_name})
+        requests.post(clear_url, json={"request_id": request_id, "master": True, "workflow_name": workflow_name})
 
 def run_workflow():
     global speed
@@ -49,7 +49,7 @@ def run_workflow():
     gevent.joinall(jobs)
     master_addr = repo.get_all_addrs(workflow_name + '_workflow_metadata')[0]
     clear_url = 'http://{}/clear'.format(master_addr)
-    requests.post(clear_url, json={'request_id': request_id, 'master': True, 'workflow_name': workflow_name})
+    requests.post(clear_url, json={"request_id'": request_id, "master": True, "workflow_name": workflow_name})
     end = time.time()
     print('----ending ', request_id, '----')
     latency_results.append(end - start)

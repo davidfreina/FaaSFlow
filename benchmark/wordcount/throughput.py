@@ -36,7 +36,7 @@ def run_workflow():
     gevent.joinall(jobs)
     master_addr = repo.get_all_addrs()[0]
     clear_url = 'http://{}/clear'.format(master_addr)
-    requests.post(clear_url, json={'request_id': request_id, 'master': True})
+    requests.post(clear_url, json={"request_id": request_id, "master": True})
     end = time.time()
     # print('----ending ', request_id, '----')
     latency_results.append(end - start)

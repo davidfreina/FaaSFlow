@@ -50,7 +50,7 @@ def run_workflow(workflow_name, request_id):
         elif config.CONTROL_MODE == 'MasterSP':
             master_addr = config.MASTER_HOST
         clear_url = 'http://{}/clear'.format(master_addr)
-        requests.post(clear_url, json={'request_id': request_id, 'master': True, 'workflow_name': workflow_name})
+        requests.post(clear_url, json={"request_id": request_id, "master": True, "workflow_name": workflow_name})
 
     return end - start
 
