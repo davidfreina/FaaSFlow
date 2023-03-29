@@ -1,24 +1,26 @@
+import time
+import pandas as pd
+import config
+from repository import Repository
+import sys
+import getopt
+import requests
+import uuid
 from gevent import monkey
 monkey.patch_all()
-import uuid
-import requests
-import getopt
-import sys
 sys.path.append('..')
 sys.path.append('../../../config')
-from repository import Repository
-import config
-import pandas as pd
-import time
 
 repo = Repository()
 TEST_PER_WORKFLOW = 2 * 60
 
+
 def run_workflow(workflow_name, request_id):
     url = 'http://' + config.GATEWAY_ADDR + '/run'
-    data = {"workflow":workflow_name, "request_id": request_id}
+    data = {"workflow": workflow_name, "request_id": request_id}
     rep = requests.post(url, json=data)
     return rep.json()['latency']
+
 
 def get_data_overhead(request_id):
     data_overhead = 0
@@ -26,6 +28,7 @@ def get_data_overhead(request_id):
     for doc in docs:
         data_overhead += doc['time']
     return data_overhead
+
 
 def analyze_workflow(workflow_name):
     print(f'----analyzing {workflow_name}----')
@@ -48,18 +51,22 @@ def analyze_workflow(workflow_name):
     print(f'{workflow_name} data_overhead: ', data_overhead)
     return data_overhead
 
+
 def analyze(mode):
-    # workflow_pool = ['cycles', 'epigenomics', 'genome', 'soykb', 'video', 'illgal_recognizer', 'fileprocessing', 'wordcount']
+    workflow_pool = ['cycles', 'epigenomics', 'genome', 'soykb',
+                     'video', 'illgal_recognizer', 'fileprocessing', 'wordcount']
     # workflow_pool = ['cycles', 'epigenomics', 'genome', 'soykb']
-    workflow_pool = ['genome']
+    # workflow_pool = ['genome']
     data_overhead = []
     for workflow in workflow_pool:
         data_overhead.append(analyze_workflow(workflow))
-    df = pd.DataFrame({'workflow': workflow_pool, 'data_overhead': data_overhead})
+    df = pd.DataFrame({'workflow': workflow_pool,
+                      'data_overhead': data_overhead})
     df.to_csv(mode + '2.csv')
 
+
 if __name__ == '__main__':
-    opts, args = getopt.getopt(sys.argv[1:],'',['datamode='])
+    opts, args = getopt.getopt(sys.argv[1:], '', ['datamode='])
     for name, value in opts:
         if name == '--datamode':
             mode = value
